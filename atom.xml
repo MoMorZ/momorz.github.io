@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>一个随意的博客</title>
+  
+  
+  <link href="/atom.xml" rel="self"/>
+  
+  <link href="https://momorz.github.io/"/>
+  <updated>2020-04-11T16:32:41.433Z</updated>
+  <id>https://momorz.github.io/</id>
+  
+  <author>
+    <name>MoMorZ</name>
+    
+  </author>
+  
+  <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>第一篇博客</title>
+    <link href="https://momorz.github.io/2020/04/12/My-First-Post/"/>
+    <id>https://momorz.github.io/2020/04/12/My-First-Post/</id>
+    <published>2020-04-11T16:30:17.000Z</published>
+    <updated>2020-04-11T16:32:41.433Z</updated>
+    
+    <content type="html"><![CDATA[<p>后面会慢慢在博客放一些技术文章以及学校各个课程的一些作业。</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;后面会慢慢在博客放一些技术文章以及学校各个课程的一些作业。&lt;/p&gt;
+
+      
+    
+    </summary>
+    
+    
+    
+  </entry>
+  
+</feed>
