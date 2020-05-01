@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://momorz.github.io/"/>
-  <updated>2020-05-01T10:14:27.344Z</updated>
+  <updated>2020-05-01T11:13:46.591Z</updated>
   <id>https://momorz.github.io/</id>
   
   <author>
@@ -15,6 +15,30 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>春招实习资料整理</title>
+    <link href="https://momorz.github.io/2020/05/01/%E6%98%A5%E6%8B%9B%E5%AE%9E%E4%B9%A0%E8%B5%84%E6%96%99%E6%95%B4%E7%90%86/"/>
+    <id>https://momorz.github.io/2020/05/01/%E6%98%A5%E6%8B%9B%E5%AE%9E%E4%B9%A0%E8%B5%84%E6%96%99%E6%95%B4%E7%90%86/</id>
+    <published>2020-05-01T11:12:16.000Z</published>
+    <updated>2020-05-01T11:13:46.591Z</updated>
+    
+    <content type="html"><![CDATA[<p><a href="https://github.com/MoMorZ/Rookie_Internship_Materials" target="_blank" rel="noopener">https://github.com/MoMorZ/Rookie_Internship_Materials</a></p><p>公司不同，面试的总次数是不同的。所以会出现差异。</p><p>整理了一部分，未完待续。</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;&lt;a href=&quot;https://github.com/MoMorZ/Rookie_Internship_Materials&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;https://github.com/MoMorZ/Rookie_Internshi
+      
+    
+    </summary>
+    
+    
+    
+      <category term="实习" scheme="https://momorz.github.io/tags/%E5%AE%9E%E4%B9%A0/"/>
+    
+  </entry>
   
   <entry>
     <title>编译原理第一次实验</title>
