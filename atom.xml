@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://momorz.github.io/"/>
-  <updated>2020-05-01T11:13:46.591Z</updated>
+  <updated>2020-08-29T08:28:14.459Z</updated>
   <id>https://momorz.github.io/</id>
   
   <author>
@@ -17,26 +17,26 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>春招实习资料整理</title>
-    <link href="https://momorz.github.io/2020/05/01/%E6%98%A5%E6%8B%9B%E5%AE%9E%E4%B9%A0%E8%B5%84%E6%96%99%E6%95%B4%E7%90%86/"/>
-    <id>https://momorz.github.io/2020/05/01/%E6%98%A5%E6%8B%9B%E5%AE%9E%E4%B9%A0%E8%B5%84%E6%96%99%E6%95%B4%E7%90%86/</id>
-    <published>2020-05-01T11:12:16.000Z</published>
-    <updated>2020-05-01T11:13:46.591Z</updated>
+    <title>ucontext库接口简单介绍</title>
+    <link href="https://momorz.github.io/2020/08/29/ucontext%E5%BA%93%E6%8E%A5%E5%8F%A3%E7%AE%80%E5%8D%95%E4%BB%8B%E7%BB%8D/"/>
+    <id>https://momorz.github.io/2020/08/29/ucontext%E5%BA%93%E6%8E%A5%E5%8F%A3%E7%AE%80%E5%8D%95%E4%BB%8B%E7%BB%8D/</id>
+    <published>2020-08-29T07:55:27.000Z</published>
+    <updated>2020-08-29T08:28:14.459Z</updated>
     
-    <content type="html"><![CDATA[<p><a href="https://github.com/MoMorZ/Rookie_Internship_Materials" target="_blank" rel="noopener">https://github.com/MoMorZ/Rookie_Internship_Materials</a></p><p>公司不同，面试的总次数是不同的。所以会出现差异。</p><p>整理了一部分，未完待续。</p>]]></content>
+    <content type="html"><![CDATA[<h1 id="ucontext用处"><a href="#ucontext用处" class="headerlink" title="ucontext用处"></a>ucontext用处</h1><p>GNU C库提供的一组用于创建、保存、切换用户态执行上下文的接口，在很多平台已经废弃了。可以用来编写协程。</p><p>这里简单介绍下接口。</p><a id="more"></a><h1 id="数据结构"><a href="#数据结构" class="headerlink" title="数据结构"></a>数据结构</h1><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">ucontext</span> &#123;</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">ucontext</span> *<span class="title">uc_link</span>;</span></span><br><span class="line">    <span class="keyword">sigset_t</span> uc_sigmask;</span><br><span class="line">    <span class="keyword">stack_t</span> uc_stack;</span><br><span class="line">    <span class="keyword">mcontext_t</span> uc_mcontext;</span><br><span class="line">    ...</span><br><span class="line">&#125; <span class="keyword">ucontext_t</span>;</span><br></pre></td></tr></table></figure><ul><li><p><code>uc_link</code>指向后继上下文，即当前context结束后继续执行的context。</p></li><li><p><code>uc_sigmask</code>为上下文运行阶段需屏蔽的信号</p></li><li><p><code>uc_stack</code>为上下文的运行时栈</p></li><li><p><code>uc_mcontext</code>保存具体的上下文，如寄存器、堆栈指针、PC等</p></li></ul><h1 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h1><h2 id="makecontext"><a href="#makecontext" class="headerlink" title="makecontext"></a>makecontext</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">makecontext</span><span class="params">(<span class="keyword">ucontext_t</span> *ucp, <span class="keyword">void</span> (*func)(), <span class="keyword">int</span> argc, ...)</span></span></span><br></pre></td></tr></table></figure><p>初始化一个上下文<code>ucp</code>，将一个函数<code>func</code>绑定到context中，<code>argc</code>用于指明函数参数的个数，以可变参数形式传入。使用前需指定栈信息<code>uc_stack</code>（包括指针SP和大小），运行时的信号屏蔽掩码<code>uc_sigmask</code>以及后继上下文<code>uc_link</code>。</p><p>如下：</p><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">char</span> stack1[<span class="number">1024</span>];</span><br><span class="line">getcontext(&amp;ctx[<span class="number">1</span>]);</span><br><span class="line">ctx[<span class="number">1</span>].uc_stack.ss_sp = stack1;</span><br><span class="line">ctx[<span class="number">1</span>].uc_stack.ss_size = <span class="keyword">sizeof</span>(stack1);</span><br><span class="line">ctx[<span class="number">1</span>].uc_stack.ss_flags = <span class="number">0</span>;</span><br><span class="line">ctx[<span class="number">1</span>].uc_link = &amp;ctx[<span class="number">0</span>];</span><br><span class="line">makecontext(&amp;ctx[<span class="number">1</span>], func1, <span class="number">0</span>);</span><br></pre></td></tr></table></figure><h2 id="setcontext"><a href="#setcontext" class="headerlink" title="setcontext"></a>setcontext</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">setcontext</span><span class="params">(<span class="keyword">const</span> <span class="keyword">ucontext_t</span> *ucp)</span></span></span><br></pre></td></tr></table></figure><p>切换到指定上下文。</p><h2 id="getcontext"><a href="#getcontext" class="headerlink" title="getcontext"></a>getcontext</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">getcontext</span><span class="params">(<span class="keyword">ucontext_t</span> *ucp)</span></span></span><br></pre></td></tr></table></figure><p>保存当前上下文到指定上下文<code>ucp</code>中。后续可以使用<code>setcontext</code>或<code>swapcontext</code>恢复，恢复后会沿着<code>getcontext</code>调用点之后继续执行。</p><h2 id="swapcontext"><a href="#swapcontext" class="headerlink" title="swapcontext"></a>swapcontext</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">swapcontext</span><span class="params">(<span class="keyword">ucontext_t</span> *oucp, <span class="keyword">ucontext_t</span> *ucp)</span></span></span><br></pre></td></tr></table></figure><p>保存当前上下文到指定上下文<code>oucp</code>中，并切换到<code>ucp</code>中。</p>]]></content>
     
     <summary type="html">
     
-      
-      
-        &lt;p&gt;&lt;a href=&quot;https://github.com/MoMorZ/Rookie_Internship_Materials&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;https://github.com/MoMorZ/Rookie_Internshi
-      
+      &lt;h1 id=&quot;ucontext用处&quot;&gt;&lt;a href=&quot;#ucontext用处&quot; class=&quot;headerlink&quot; title=&quot;ucontext用处&quot;&gt;&lt;/a&gt;ucontext用处&lt;/h1&gt;&lt;p&gt;GNU C库提供的一组用于创建、保存、切换用户态执行上下文的接口，在很多平台已经废弃了。可以用来编写协程。&lt;/p&gt;
+&lt;p&gt;这里简单介绍下接口。&lt;/p&gt;
     
     </summary>
     
     
     
-      <category term="实习" scheme="https://momorz.github.io/tags/%E5%AE%9E%E4%B9%A0/"/>
+      <category term="协程" scheme="https://momorz.github.io/tags/%E5%8D%8F%E7%A8%8B/"/>
+    
+      <category term="Linux" scheme="https://momorz.github.io/tags/Linux/"/>
     
   </entry>
   
